@@ -1,0 +1,29 @@
+# Core Python utilities
+astor
+regex
+
+# Code parsing / static analysis
+asttokens
+parso
+
+# LLM / Agent-related (choose depending on your backend)
+openai>=1.0.0
+
+# File handling, caching, observability
+python-dotenv
+tqdm
+
+# Web / UI demo app
+streamlit
+
+# Testing & execution tools
+pytest
+pytest-cov
+
+# Jupyter support for the notebook demo
+notebook
+ipykernel
+
+# Optional: if running your pipeline notebooks in Kaggle/Colab
+pandas
+
