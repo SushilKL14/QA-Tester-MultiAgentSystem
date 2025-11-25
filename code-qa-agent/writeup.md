@@ -1,7 +1,12 @@
-# 🤖 QA Tester — Multi-Agent Code Analysis
-### Fully Automated Test Generation, Execution & Bug Reporting — Offline First
+---
+<h1 align="center">🤖 QA Tester — Multi-Agent Code Analysis</h1>
+
+<p align="center">
+  Fully Automated Test Generation, Execution & Bug Reporting — Offline First
+</p>
 
 ---
+
 
 ## 🎯 Project Overview
 Unit testing consumes time and slows shipping. This system removes that bottleneck by automating:
