@@ -1,60 +1,122 @@
-Project Overview
-This system automates code analysis, test case generation, execution, and bug reporting using a modular multi-agent design. It operates fully offline but can optionally leverage Gemini for semantic reasoning when allowed. The goal is to reduce human effort in reviewing code and identifying defects.
+# 📌 Autonomous Code QA Multi-Agent System
+### Fully Automated Test Generation, Execution & Bug Reporting — Offline First
 
-Problem Statement
-Manual unit test writing and validation is slow, inconsistent, and error-prone. Developer velocity drops whenever code changes require test updates. This project solves that by automatically analyzing code behavior and producing executable tests and structured bug findings.
+---
 
-Approach
-The architecture follows a pipeline where each agent performs a focused responsibility and passes context to the next stage.
+## 🎯 Project Overview
+Unit testing consumes time and slows shipping. This system removes that bottleneck by automating:
+✔ Code understanding  
+✔ Test case generation  
+✔ Test execution  
+✔ Bug reporting  
 
-Agent	Responsibility
-Code Understanding Agent	Parses code (AST + optional Gemini reasoning) to extract function signatures, behavior, and edge cases
-Test Generation Agent	Uses heuristics + model insights to write runnable tests
-Test Runner	Executes generated tests and captures results
-Bug Reporter	Produces concise defect summaries from failing tests
-All communication is stateless across modules except where explicit context is stored.
+It accelerates developer workflows by eliminating repetitive manual effort while ensuring consistent coverage and early defect discovery.
 
-Offline vs Gemini-Enabled Modes
-Mode	Strength	Limitation
-Offline (default)	Fully secure, no dependency on external APIs	Only structural insights (syntax-level understanding)
-Gemini Assisted	Detects implicit behavior, boundary conditions, failure risks	Requires API key + network access
-Fallback ensures the system always functions in restricted evaluation environments.
+The system works **fully offline**, making it evaluation-friendly and enterprise-safe. When permitted, **Gemini** can be enabled to infer deeper behavior and edge cases.
 
-Key Functionality Demonstrated
-•	Source code parsing with abstract syntax trees
-•	Classification of extracted functions and parameters
-•	Automatic test creation without manual templates
-•	Real execution to prove pass/fail truth — not guesswork
-•	Defect reporting tied to reproducible test cases
-No part of the pipeline pretends to be “smart” where it isn’t — results are based on verifiable execution.
+---
 
-Execution Instructions
+## ❗ Problem Statement
+Manual test writing is:
+- Slow and repetitive
+- Prone to human oversight
+- Painful to maintain as code evolves
+
+This creates delayed feedback loops and decreases product quality.  
+Our tool generates tests and identifies defects **instantly**, improving release velocity.
+
+---
+
+## 🧠 System Architecture
+
+Source Code
+↓
+Code Understanding Agent
+↓ (AST + Optional Gemini reasoning)
+Test Generation Agent
+↓ (Runnable pytest tests)
+Test Runner
+↓ (Execution results)
+Bug Reporter
+↓ (Reproducible defect insights)
+
+yaml
+Copy code
+
+Each agent performs one focused responsibility — a modular pipeline that scales.
+
+---
+
+## 🔀 Offline vs Gemini Modes
+
+| Mode | Advantage | Limitation |
+|------|-----------|------------|
+| **Offline (default)** | Secure & self-contained | No implicit behavior detection |
+| **Gemini-Assisted** | Smarter scenario inference | Requires internet + API key |
+
+Fallback ensures **robust operation everywhere** (including hackathon restricted networks).
+
+---
+
+## 🚀 Key Features
+- Automated test creation using AST analysis
+- Executable validation — no hallucinated answers
+- Edge case identification
+- Structured bug reporting with traceback and repro steps
+- CI-friendly modular architecture
+
+Technology is measured by **proof of execution**, not guesswork.
+
+---
+
+## 🖥 Live Demo Output (Screenshot)
+
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="650px"/>
+
+---
+
+## 🔧 Execution Instructions
+
+### Offline Run (Recommended)
 
 pip install -r requirements.txt
-python src/demo/app.py     # OFFLINE (recommended for evaluation)
+python code-qa-agent/demo/app.py
+Enable Gemini (Optional)
 
-Enable Gemini only if allowed:
-
+```bash
 export GEMINI_API_KEY="your-key"
-USE_GEMINI=true python src/demo/app.py
+USE_GEMINI=true python code-qa-agent/demo/app.py
+```
+Output Includes:
+Total tests executed
 
-Test output includes:
-•	Test count
-•	Pass/fail summary
-•	Exact traceback for failures
-•	Bug report
+Pass/fail summary
 
-Limitations
-This MVP is intentionally scoped. It does not:
-•	Perform deep flow analysis across module boundaries
-•	Confirm logical correctness beyond assertion inference
-•	Handle UI or asynchronous code today
-These are future improvements, not excuses.
+Exact error tracebacks
 
-Why This Matters (Impact)
-Developers waste excessive time writing test scaffolding instead of solving real problems. This system cuts that overhead immediately, enabling:
-•	Faster iteration cycles
-•	Higher defect detection earlier
-•	More consistent test coverage
-If adopted in CI, it scales without extra effort.
+Complete defect reports
 
+📌 Limitations (Current Version)
+To keep MVP scope sharp:
+
+No multi-file inference
+
+No async or UI analysis yet
+
+Does not validate business logic correctness
+
+These gaps are next-stage improvements.
+
+💥 Why This Matters
+Testing is a tax on engineering productivity.
+Automation here gives:
+
+Faster development cycles
+
+Higher testing coverage with zero manual effort
+
+Consistent early bug detection
+
+Instant CI integration
+
+Engineering teams regain time to solve real problems.
