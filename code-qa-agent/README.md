@@ -123,10 +123,12 @@ Every defect is tied to a reproducible failing test — no speculation.
 
 📈 Current Limitations & Future Scope
 ```bash
-Today	Coming Soon
-Single-file analysis	Multi-file relational logic
-No async support	Async + API endpoint testing
-Basic assertion inference	Learned assertion prediction
+| Today                     | Coming Soon                  |
+| ------------------------- | ---------------------------- |
+| Single-file analysis      | Multi-file relational logic  |
+| No async support          | Async + API endpoint testing |
+| Basic assertion inference | Learned assertion prediction |
+
 ```
 
 This is an MVP with real-world value, not a toy.
