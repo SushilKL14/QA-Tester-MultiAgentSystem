@@ -25,7 +25,7 @@ When allowed, Gemini adds semantic reasoning for deeper insights.
 ---
 
 ## 🧠 System Architecture
-
+```bash
 ┌────────────────────┐
 │ Code Understanding │  → Extract functions + behavior
 └─────────┬──────────┘
@@ -42,7 +42,7 @@ When allowed, Gemini adds semantic reasoning for deeper insights.
 │ Bug Reporter       │  → Failures → Defects
 └────────────────────┘
 
-
+```
 
 Each stage passes context — no hallucination, only verifiable execution.
 
