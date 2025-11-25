@@ -1,3 +1,5 @@
+# /kaggle/working/code-qa-agent/data/samples/test.py
+
 def add(a, b):
     return a + b
 
@@ -5,7 +7,10 @@ def subtract(a, b):
     return a - b
 
 def test_add():
-    return add(2, 3)
+    assert add(2, 3) == 5
+    assert add(-1, 1) == 0
+    assert add(0, 0) == 0
 
 def test_subtract():
-    return subtract(5, 3)
+    assert subtract(5, 3) == 2
+    assert subtract(0, 5) == -5
