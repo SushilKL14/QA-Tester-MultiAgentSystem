@@ -27,23 +27,22 @@ When allowed, Gemini adds semantic reasoning for deeper insights.
 ## 🧠 System Architecture
 
 ┌────────────────────┐
-│ Code Understanding │ → Extract functions + behavior
+│ Code Understanding │  → Extract functions + behavior
 └─────────┬──────────┘
-↓
+          ↓
 ┌────────────────────┐
-│ Test Generator │ → Create runnable unit tests
+│ Test Generator     │  → Create runnable unit tests
 └─────────┬──────────┘
-↓
+          ↓
 ┌────────────────────┐
-│ Test Runner │ → Execute + capture results
+│ Test Runner        │  → Execute + capture results
 └─────────┬──────────┘
-↓
+          ↓
 ┌────────────────────┐
-│ Bug Reporter │ → Failures → Defects
+│ Bug Reporter       │  → Failures → Defects
 └────────────────────┘
 
-yaml
-Copy code
+
 
 Each stage passes context — no hallucination, only verifiable execution.
 
