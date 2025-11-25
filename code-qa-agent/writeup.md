@@ -1,4 +1,4 @@
-# 📌 Autonomous Code QA Multi-Agent System
+# 🤖 QA Tester — Multi-Agent Code Analysis
 ### Fully Automated Test Generation, Execution & Bug Reporting — Offline First
 
 ---
