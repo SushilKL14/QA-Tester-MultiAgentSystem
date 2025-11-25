@@ -76,9 +76,9 @@ Technology is measured by **proof of execution**, not guesswork.
 
 ## 🖥 Live Demo Output (Screenshot)
 
-<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="650px" height="auto"/>
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="650px" height="400"/>
 
-<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag2.png" width="650px" height="auto"/>
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag2.png" width="650px" height="400"/>
 
 ---
 
