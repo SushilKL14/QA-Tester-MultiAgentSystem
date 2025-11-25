@@ -133,7 +133,6 @@ Every defect is tied to a reproducible failing test — no speculation.
 
 ```
 
-This is an MVP with real-world value, not a toy.
 
 👤 Author
 SUSHIL
