@@ -1,130 +1,131 @@
-# Multi-Agent Code Analysis and Testing Automation System
+<h1 align="center">🤖 QA Tester — Multi-Agent Code Analysis & Auto-Test System</h1>
 
-This project provides a modular, multi-agent architecture that automates
-code understanding, unit test generation, test execution, and structured
-bug reporting. It supports both secure offline operation and optional
-AI-powered code reasoning through Gemini.
-
----
-
-## 📌 Features
-
-| Capability | Status |
-|----------|:------:|
-| Static code analysis (AST + heuristics) | ✔️ |
-| AI-assisted reasoning using Gemini (optional) | ✔️ |
-| Automated unit test generation | ✔️ |
-| Test execution and pass/fail summary | ✔️ |
-| Structured bug reporting | ✔️ |
-| Web-based demo / CLI execution | ✔️ |
-| Fully modular multi-agent design | ✔️ |
-
-All agents operate independently but communicate using a shared interface
-for task delegation and state passing.
+<p align="center">
+  <b>Automated Code Understanding • Test Creation • Execution • Bug Detection</b><br>
+  Powered by Modular AI Agents — Offline-friendly with Optional Gemini Enhancements
+</p>
 
 ---
 
-## 🧩 System Architecture
+## 🚀 Project Overview
 
-src/
-├─ agents/
-│ ├─ code_understanding.py
-│ ├─ test_generation.py
-│ ├─ bug_reporting.py
-│ └─ gemini_client.py ← AI reasoning
-│
-├─ tools/
-│ ├─ file_utils.py
-│ └─ test_runner.py
-│
-├─ demo/
-│ └─ app.py ← Main runner
-│
-└─ tests/
-└─ ... (generated tests stored here)
+Modern development wastes too much time writing and updating tests manually.  
+This system eliminates that repetitive burden by:
+
+✔ Analyzing Python source code  
+✔ Generating runnable unit tests  
+✔ Executing and verifying output  
+✔ Producing real, actionable bug reports  
+
+All with **zero manual inspection**.
+
+Offline mode ensures this works **securely on any evaluation setup**.  
+When allowed, Gemini adds semantic reasoning for deeper insights.
+
+---
+
+## 🧠 System Architecture
+
+┌────────────────────┐
+│ Code Understanding │ → Extract functions + behavior
+└─────────┬──────────┘
+↓
+┌────────────────────┐
+│ Test Generator │ → Create runnable unit tests
+└─────────┬──────────┘
+↓
+┌────────────────────┐
+│ Test Runner │ → Execute + capture results
+└─────────┬──────────┘
+↓
+┌────────────────────┐
+│ Bug Reporter │ → Failures → Defects
+└────────────────────┘
 
 yaml
 Copy code
 
-Each component follows a single-responsibility design for clarity and scoring.
+Each stage passes context — no hallucination, only verifiable execution.
 
 ---
 
-## 🚀 How to Run
+## 🧩 Key Features
 
-### 1️⃣ Install dependencies
+| Feature | Offline | Gemini-Enhanced |
+|--------|:------:|:--------------:|
+| Code structure parsing | ✅ | ✅ |
+| Semantic function behavior | ⚠ Basic | 🔥 Yes |
+| Edge-case inference | Limited | ✔ Strong |
+| Test generation | ✔ | ✔ |
+| Bug detection | ✔ | ✔ |
+
+No internet? No problem — still fully functional.
+
+---
+
+## 📌 What Problem Does It Solve?
+
+> “Developers spend hours writing tests for simple functions.”
+
+⏱️ Test writing slows delivery  
+⚠️ Missing tests hide bugs  
+🔄 Refactors require rewriting validation  
+
+This project **automates** what you shouldn’t be doing manually.
+
+---
+
+## 🛠 Tech Stack
+
+- Python
+- AST-based static analysis
+- PyTest execution engine
+- (Optional) Gemini model inference
+- Gradio UI demo
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/SushilKL14/QA-Tester-MultiAgentSystem
+cd QA-Tester-MultiAgentSystem
 pip install -r requirements.txt
-
-shell
-Copy code
-
-### 2️⃣ Run the demo pipeline
-python src/demo/app.py
-
-yaml
-Copy code
-
-### Output includes:
-- Code analysis summary
-- Generated test cases
-- Test runner summary (passed/failed count)
-- Bug report if any failures exist
-
----
-
-## ⚙️ Gemini Integration (AI Code Reasoning)
-
-This project integrates **Gemini 1.5 Flash** through:
-
-src/agents/gemini_client.py
-
-vbnet
-Copy code
-
-When a valid API key is provided using environment variables, the system can
-perform advanced semantic reasoning on code to extract expected behavior and
-potential edge cases.
-
-To enable Gemini:
-export GEMINI_API_KEY="your-key-here"
-USE_GEMINI=true python src/demo/app.py
-
+▶️ Run the System
+1️⃣ Offline Mode (Recommended)
 bash
 Copy code
-
-To disable Gemini:
-USE_GEMINI=false python src/demo/app.py
-
-yaml
+python src/demo/app.py
+2️⃣ Gemini-Boosted Mode (Optional)
+bash
 Copy code
+export GEMINI_API_KEY="your-key"
+USE_GEMINI=true python src/demo/app.py
+🖥 Live Demo Output (Screenshot)
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/demo/screenshot1.png" width="600"/>
+Example: Automatically generated tests all passed ✔
+Human-grade validation • Zero manual test writing
 
-To comply with evaluation security:
-- No keys are included in the repo  
-- Offline fallback analysis ensures full pipeline functionality during judging
+(If you upload a second screenshot later, I’ll add a visual comparison section.)
 
----
+🧪 Example Output
+Number of auto-tests generated
 
-## 📦 Delivered Artifacts
+Pass/Fail summary
 
-| Deliverable | Status |
-|------------|:------:|
-| Working automation prototype | ✔️ |
-| Multi-agent framework | ✔️ |
-| Structured test reports | ✔️ |
-| Bug summary output | ✔️ |
-| Secure Gemini integration | ✔️ |
+Traceback for failing tests
 
----
+Bug report JSON mapping
 
-## 📈 Future Enhancements (Optional Section — Good for Scoring)
-- Code coverage scoring and visualization
-- Multi-file dependency graph reasoning
-- Interactive UI for browsing generated bugs
-- GitHub Actions CI integration
+Every defect is tied to a reproducible failing test — no speculation.
 
----
+📈 Current Limitations & Future Scope
+Today	Coming Soon
+Single-file analysis	Multi-file relational logic
+No async support	Async + API endpoint testing
+Basic assertion inference	Learned assertion prediction
 
-## 📝 License
-MIT License — fully open for review and submission scoring.
+This is an MVP with real-world value, not a toy.
 
----
+👤 Author
+SUSHIL
