@@ -1,4 +1,4 @@
-<h1 align="center">🤖 QA Tester — Multi-Agent Code Analysis & Auto-Test System</h1>
+<h1 align="center">🤖 QA Tester — Multi-Agent Code Analysis</h1>
 
 <p align="center">
   <b>Automated Code Understanding • Test Creation • Execution • Bug Detection</b><br>
