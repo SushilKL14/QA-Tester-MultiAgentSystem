@@ -1,104 +1,48 @@
+Project Overview
+This system automates code analysis, test case generation, execution, and bug reporting using a modular multi-agent design. It operates fully offline but can optionally leverage Gemini for semantic reasoning when allowed. The goal is to reduce human effort in reviewing code and identifying defects.
+Problem Statement
+Manual unit test writing and validation is slow, inconsistent, and error-prone. Developer velocity drops whenever code changes require test updates. This project solves that by automatically analyzing code behavior and producing executable tests and structured bug findings.
+Approach
+The architecture follows a pipeline where each agent performs a focused responsibility and passes context to the next stage.
+Agent	Responsibility
+Code Understanding Agent	Parses code (AST + optional Gemini reasoning) to extract function signatures, behavior, and edge cases
+Test Generation Agent	Uses heuristics + model insights to write runnable tests
+Test Runner	Executes generated tests and captures results
+Bug Reporter	Produces concise defect summaries from failing tests
+All communication is stateless across modules except where explicit context is stored.
+Offline vs Gemini-Enabled Modes
+Mode	Strength	Limitation
+Offline (default)	Fully secure, no dependency on external APIs	Only structural insights (syntax-level understanding)
+Gemini Assisted	Detects implicit behavior, boundary conditions, failure risks	Requires API key + network access
+Fallback ensures the system always functions in restricted evaluation environments.
+Key Functionality Demonstrated
+•	Source code parsing with abstract syntax trees
+•	Classification of extracted functions and parameters
+•	Automatic test creation without manual templates
+•	Real execution to prove pass/fail truth — not guesswork
+•	Defect reporting tied to reproducible test cases
+No part of the pipeline pretends to be “smart” where it isn’t — results are based on verifiable execution.
+Execution Instructions
+pip install -r requirements.txt
+python src/demo/app.py     # OFFLINE (recommended for evaluation)
+Enable Gemini only if allowed:
+export GEMINI_API_KEY="your-key"
+USE_GEMINI=true python src/demo/app.py
+Test output includes:
+•	Test count
+•	Pass/fail summary
+•	Exact traceback for failures
+•	Bug report
+Limitations
+This MVP is intentionally scoped. It does not:
+•	Perform deep flow analysis across module boundaries
+•	Confirm logical correctness beyond assertion inference
+•	Handle UI or asynchronous code today
+These are future improvements, not excuses.
+Why This Matters (Impact)
+Developers waste excessive time writing test scaffolding instead of solving real problems. This system cuts that overhead immediately, enabling:
+•	Faster iteration cycles
+•	Higher defect detection earlier
+•	More consistent test coverage
+If adopted in CI, it scales without extra effort.
 
-import sys
-import os
-import shutil
-import gradio as gr
-
-PROJECT_ROOT = "/kaggle/working/code-qa-agent"
-sys.path.append(PROJECT_ROOT)
-
-SAMPLES_DIR = f"{PROJECT_ROOT}/data/samples"
-os.makedirs(SAMPLES_DIR, exist_ok=True)
-
-from src.pipeline import run_pipeline_on_file
-
-
-def is_dot_noise(text: str) -> bool:
-    t = text.strip()
-    if not t:
-        return False
-    allowed = set(".·- ")
-    return all(c in allowed for c in t)
-
-
-def format_pretty_output(raw: str) -> str:
-    lines = [l.strip() for l in raw.splitlines() if l.strip() and not is_dot_noise(l)]
-
-    if not lines:
-        return "⚠ No output"
-
-    full = "\n".join(lines)
-    lower = full.lower()
-
-    if "failed" in lower or "error" in lower:
-        return "❌ Tests failed\n\n" + full
-
-    if "collected 0 items" in lower:
-        return "⚠ No tests found\n\n" + full
-
-    if "passed" in lower:
-        return "✔ All tests passed\n\n" + full
-
-    return full
-
-
-def safe_run(file):
-    if file is None:
-        return "No file uploaded."
-
-    try:
-        if isinstance(file, dict):
-            filename = file.get("name", "uploaded.py")
-            save_path = os.path.join(SAMPLES_DIR, filename)
-            with open(save_path, "wb") as f:
-                f.write(file["data"])
-
-        elif hasattr(file, "path"):
-            if not os.path.exists(file.path):
-                return f"Uploaded file path does not exist: {file.path}"
-            save_path = os.path.join(SAMPLES_DIR, file.name)
-            shutil.copy(file.path, save_path)
-
-        elif isinstance(file, str):
-            if not os.path.exists(file):
-                return f"Uploaded file path does not exist: {file}"
-            filename = os.path.basename(file)
-            save_path = os.path.join(SAMPLES_DIR, filename)
-            shutil.copy(file, save_path)
-
-        else:
-            return "Invalid file object received."
-
-        result = run_pipeline_on_file(save_path)
-
-        if isinstance(result, dict):
-            raw = (
-                result.get("stdout")
-                or result.get("output")
-                or result.get("exec", {}).get("output")
-            )
-            if raw is None:
-                raw = str(result)
-        else:
-            raw = str(result)
-
-        final_text = format_pretty_output(raw)
-
-        if len(final_text) > 6000:
-            final_text = final_text[:6000] + "\n\n...[output truncated]"
-
-        return final_text
-
-    except Exception as e:
-        return f"💥 Pipeline crashed: {e}"
-
-
-ui = gr.Interface(
-    fn=safe_run,
-    inputs=gr.File(label="Upload Python File (.py)"),
-    outputs=gr.Textbox(label="Output", lines=25),
-    title="Code QA Tester Agent — Gradio Demo",
-)
-
-if __name__ == "__main__":
-    ui.launch(share=True)
