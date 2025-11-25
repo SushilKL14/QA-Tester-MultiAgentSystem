@@ -87,26 +87,29 @@ This project **automates** what you shouldn’t be doing manually.
 
 ## 📦 Installation
 
-```bash
+
 git clone https://github.com/SushilKL14/QA-Tester-MultiAgentSystem
 cd QA-Tester-MultiAgentSystem
 pip install -r requirements.txt
+
 ▶️ Run the System
+
 1️⃣ Offline Mode (Recommended)
-bash
+
 Copy code
 python src/demo/app.py
+
 2️⃣ Gemini-Boosted Mode (Optional)
-bash
+
 Copy code
 export GEMINI_API_KEY="your-key"
 USE_GEMINI=true python src/demo/app.py
+
 🖥 Live Demo Output (Screenshot)
 <img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/demo/screenshot1.png" width="600"/>
 Example: Automatically generated tests all passed ✔
 Human-grade validation • Zero manual test writing
 
-(If you upload a second screenshot later, I’ll add a visual comparison section.)
 
 🧪 Example Output
 Number of auto-tests generated
