@@ -1,29 +1,26 @@
-# Core Python utilities
-astor
-regex
-
-# Code parsing / static analysis
-asttokens
-parso
-
-# LLM / Agent-related (choose depending on your backend)
-openai>=1.0.0
-
-# File handling, caching, observability
+# Core functionality
 python-dotenv
 tqdm
+requests
 
-# Web / UI demo app
+# Google Gemini API
+google-generativeai>=0.6.0
+
+# Static code analysis
+asttokens
+
+# UI Demo
 streamlit
 
-# Testing & execution tools
+# Testing
 pytest
 pytest-cov
+pytest-asyncio
 
-# Jupyter support for the notebook demo
+# Notebook support (optional)
 notebook
 ipykernel
-
-# Optional: if running your pipeline notebooks in Kaggle/Colab
 pandas
 
+# Dev quality
+rich
