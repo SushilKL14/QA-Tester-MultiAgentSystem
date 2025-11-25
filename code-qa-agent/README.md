@@ -111,9 +111,6 @@ USE_GEMINI=true python src/demo/app.py
 <img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag2.png" width="900" height="400"/>
 
 
-Example: Automatically generated tests all passed ✔
-Human-grade validation • Zero manual test writing
-
 
 🧪 Example Output
 Number of auto-tests generated
