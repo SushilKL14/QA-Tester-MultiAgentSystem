@@ -106,9 +106,10 @@ USE_GEMINI=true python src/demo/app.py
 
 🖥 Live Demo Output (Screenshot)
 
-<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="600"/>
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="700" height="400"/>
 
-<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag1.png" width="600"/>
+<img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/code-qa-agent/demo/imag2.png" width="600"/>
+
 
 Example: Automatically generated tests all passed ✔
 Human-grade validation • Zero manual test writing
