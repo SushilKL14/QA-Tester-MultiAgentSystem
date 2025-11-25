@@ -1,54 +1,106 @@
-# src/pipeline.py
+    # src/pipeline.py
 
-"""
-End-to-end pipeline invoking the multi-agent flow:
-1) Analyze code file
-2) Generate tests
-3) Run tests
-4) Produce bug report (if any)
-"""
-
-import os
-from src.agents.code_understanding import analyze_file
-from src.agents.test_generator import generate_tests_for_file
-from src.agents.test_runner import run_pytests
-from src.agents.bug_reporter import create_bug_report
-from src.tools.observability import logger, metrics
+    import os
+    import shutil
+    import tempfile
+    import subprocess
+    from typing import Dict, Any
+    from src.agents.code_understanding import analyze_file
+    from src.tools.observability import logger
 
 
-def run_pipeline_on_file(path: str):
-    # 1. Analyze
-    code_meta = analyze_file(path)
-
-    # 2. Generate tests
-    test_code = generate_tests_for_file(code_meta)
-
-    # 3. Run tests
-    exec_res = run_pytests(test_code, path)
-
-
-    metrics["tests_run"] += 1
-
-    if not exec_res["passed"]:
-        metrics["tests_failed"] += 1
-        report = create_bug_report(exec_res, path)
-        logger.warning(f"Generated bug report: {report['title']}")
-        return {
-            "status": "failed",
-            "report": report,
-            "exec": exec_res
-        }
-
-    else:
-        metrics["tests_passed"] += 1
-        return {
-            "status": "passed",
-            "exec": exec_res
-        }
+    def _copy_source(code_path: str, tmpdir: str):
+        if os.path.isdir(code_path):
+            dst = os.path.join(tmpdir, os.path.basename(code_path))
+            shutil.copytree(code_path, dst)
+            return dst
+        else:
+            basename = os.path.basename(code_path)
+            dst = os.path.join(tmpdir, basename)
+            shutil.copy(code_path, dst)
+            return dst
 
 
-if __name__ == "__main__":
-    import sys
-    target = sys.argv[1] if len(sys.argv) > 1 else "data/samples/simple_example.py"
-    res = run_pipeline_on_file(target)
-    print(res)
+    def _run_pytest_in_dir(code_path: str, timeout: int = 30) -> Dict[str, Any]:
+        \"\"\"
+        Copy code_path into a temp dir and run pytest there.
+        If pytest finds no tests, fallback to running the script directly.
+
+        Returns:
+            {
+                "returncode": int,
+                "output": "<stdout + stderr>"
+            }
+        \"\"\"
+        tmpdir = tempfile.mkdtemp(prefix="codeqa_")
+        try:
+            # Copy file or directory
+            if os.path.isdir(code_path):
+                test_root = _copy_source(code_path, tmpdir)
+            else:
+                # Ensure single file starts with test_ so pytest can detect
+                basename = os.path.basename(code_path)
+                if not basename.startswith("test_"):
+                    basename = "test_" + basename
+                test_root = os.path.join(tmpdir, basename)
+                shutil.copy(code_path, test_root)
+
+            pytest_target = test_root if os.path.isdir(test_root) else tmpdir
+
+            # Run pytest first
+            cmd = ["pytest", "-q", pytest_target]
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+            output = ""
+            if proc.stdout:
+                output += proc.stdout
+            if proc.stderr:
+                output += "\\n" + proc.stderr
+
+            # Fallback: if pytest collected 0 items, run as plain Python script
+            if "collected 0 items" in output.lower() and os.path.isfile(code_path):
+                cmd = ["python", test_root]
+                proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+                output = ""
+                if proc.stdout:
+                    output += proc.stdout
+                if proc.stderr:
+                    output += "\\n" + proc.stderr
+                return {"returncode": proc.returncode, "output": output}
+
+            return {"returncode": proc.returncode, "output": output}
+
+        except Exception as e:
+            return {"returncode": -1, "output": f"Execution error: {e}"}
+        finally:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+    def run_pipeline_on_file(save_path: str, run_tests: bool = False) -> Dict[str, Any]:
+        \"\"\"
+        Primary entrypoint used by the demo app.
+        run_tests=False -> only analyze
+        run_tests=True  -> analyze AND run pytest
+        \"\"\"
+        if not os.path.exists(save_path):
+            raise FileNotFoundError(save_path)
+
+        try:
+            analysis = analyze_file(save_path)
+        except Exception as e:
+            logger.exception("analyze_file failed")
+            return {"error": f"analyze_file failed: {e}"}
+
+        result = {"analysis": analysis}
+
+        if run_tests:
+            try:
+                exec_res = _run_pytest_in_dir(save_path)
+                result["exec"] = exec_res
+                result["stdout"] = exec_res.get("output", "")
+            except Exception as e:
+                logger.exception("Running tests failed")
+                result["exec"] = {"returncode": -1, "output": f"Test run failed: {e}"}
+                result["stdout"] = result["exec"]["output"]
+
+        return result
