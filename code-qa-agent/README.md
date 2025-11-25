@@ -87,7 +87,7 @@ This project **automates** what you shouldn’t be doing manually.
 
 ## 📦 Installation
 
-```bash
+
 git clone https://github.com/SushilKL14/QA-Tester-MultiAgentSystem
 cd QA-Tester-MultiAgentSystem
 pip install -r requirements.txt
@@ -96,15 +96,14 @@ pip install -r requirements.txt
 
 1️⃣ Offline Mode (Recommended)
 
-Copy code
+```bash
 python src/demo/app.py
-
+```
 2️⃣ Gemini-Boosted Mode (Optional)
-
-Copy code
+```bash
 export GEMINI_API_KEY="your-key"
 USE_GEMINI=true python src/demo/app.py
-
+```
 🖥 Live Demo Output (Screenshot)
 <img src="https://raw.githubusercontent.com/SushilKL14/QA-Tester-MultiAgentSystem/main/demo/screenshot1.png" width="600"/>
 Example: Automatically generated tests all passed ✔
@@ -123,10 +122,12 @@ Bug report JSON mapping
 Every defect is tied to a reproducible failing test — no speculation.
 
 📈 Current Limitations & Future Scope
+```bash
 Today	Coming Soon
 Single-file analysis	Multi-file relational logic
 No async support	Async + API endpoint testing
 Basic assertion inference	Learned assertion prediction
+```
 
 This is an MVP with real-world value, not a toy.
 
