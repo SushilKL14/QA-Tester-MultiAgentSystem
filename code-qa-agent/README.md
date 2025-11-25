@@ -87,7 +87,7 @@ This project **automates** what you shouldn’t be doing manually.
 
 ## 📦 Installation
 
-
+```bash
 git clone https://github.com/SushilKL14/QA-Tester-MultiAgentSystem
 cd QA-Tester-MultiAgentSystem
 pip install -r requirements.txt
